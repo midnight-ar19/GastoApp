@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="24dp">
+    android:layout_height="match_parent">
 
-    <!-- Contenido provisional para comprobar la navegación antes de agregar datos. -->
-    <TextView
+    <!-- RecyclerView recicla las filas en lugar de crear una vista por cada dato. -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/lista_ingresos"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:text="@string/placeholder_ingresos"
-        android:textAppearance="?attr/textAppearanceBodyLarge" />
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:padding="16dp" />
 </FrameLayout>

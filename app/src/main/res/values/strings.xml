@@ -3,7 +3,8 @@
     <string name="title_resumen">Resumen</string>
     <string name="title_ingresos">Ingresos</string>
     <string name="title_gastos">Gastos</string>
-    <string name="placeholder_resumen">Aquí mostraremos el balance, los ingresos y los gastos en la fase 4.</string>
-    <string name="placeholder_ingresos">Aquí mostraremos la lista de ingresos en la fase 4.</string>
+    <string name="balance_total">Balance total</string>
+    <string name="total_ingresos">Total de ingresos</string>
+    <string name="total_gastos">Total de gastos</string>
     <string name="placeholder_gastos">Aquí mostraremos las pestañas de gastos en la fase 5.</string>
 </resources>

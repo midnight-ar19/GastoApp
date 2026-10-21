@@ -17,7 +17,7 @@ class NavigationTest {
     @Test
     fun iniciaEnResumen() {
         ActivityScenario.launch(MainActivity::class.java).use {
-            verificaDestino(R.string.title_resumen, R.string.placeholder_resumen)
+            verificaDestino(R.string.title_resumen, R.string.balance_total)
         }
     }
 
@@ -26,11 +26,11 @@ class NavigationTest {
         ActivityScenario.launch(MainActivity::class.java).use {
             // Pulsamos los elementos reales de la barra inferior.
             onView(withId(R.id.ingresosFragment)).perform(click())
-            verificaDestino(R.string.title_ingresos, R.string.placeholder_ingresos)
+            verificaDestino(R.string.title_ingresos, "Sueldo")
             onView(withId(R.id.gastosFragment)).perform(click())
             verificaDestino(R.string.title_gastos, R.string.placeholder_gastos)
             onView(withId(R.id.resumenFragment)).perform(click())
-            verificaDestino(R.string.title_resumen, R.string.placeholder_resumen)
+            verificaDestino(R.string.title_resumen, R.string.balance_total)
         }
     }
 
@@ -41,6 +41,11 @@ class NavigationTest {
             scenario.recreate()
             verificaDestino(R.string.title_gastos, R.string.placeholder_gastos)
         }
+    }
+
+    private fun verificaDestino(titulo: Int, contenido: String) {
+        onView(withId(R.id.toolbar)).check(matches(hasDescendant(withText(titulo))))
+        onView(withText(contenido)).check(matches(isDisplayed()))
     }
 
     private fun verificaDestino(titulo: Int, contenido: Int) {
