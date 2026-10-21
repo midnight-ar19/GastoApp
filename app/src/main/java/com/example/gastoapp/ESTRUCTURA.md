@@ -62,6 +62,36 @@ Ingresos y Gastos, comprobar títulos y selección inferior, volver a Resumen
 y rotar desde Gastos para comprobar la restauración. NavigationTest automatiza
 el destino inicial, los cambios de sección y la recreación de la Activity.
 
+## Fase 3: modelo y estado
+
+- `model/Transaccion.kt`: define los seis campos y el enum INGRESO/GASTO.
+- `model/DatosEjemplo.kt`: crea cinco movimientos con fechas relativas al mes
+  actual y al anterior, con IDs diferentes.
+- `viewmodel/EstadoFinanciero.kt`: calcula ingresos, gastos y balance desde
+  una única lista. El balance incluye todo el historial, no solo el mes actual.
+- `viewmodel/SharedViewModel.kt`: precarga y conserva el estado en memoria;
+  expone StateFlow de solo lectura y mantiene MutableStateFlow privado.
+
+Los montos usan BigDecimal construido desde String para evitar errores de
+punto flotante. Los gastos se representan como importes positivos y se restan
+al calcular el balance. Los valores de ejemplo no presuponen una moneda.
+Las fechas usan milisegundos Unix y Calendar para ser compatibles con API 24.
+
+Ejemplos: ingresos 1250.00, gastos 290.50, balance 959.50. Hay gastos del mes
+actual y del anterior para las pestañas de la fase 5.
+
+En la fase 4 los Fragments obtendrán la misma instancia mediante
+`private val viewModel: SharedViewModel by activityViewModels()` y observarán
+`estado` con el ciclo de vida de su vista. El nombre SharedViewModel no hace
+que sea compartido automáticamente: el propietario debe ser la Activity.
+Esta fase todavía no cambia el contenido provisional de las pantallas.
+El alta y su validación se implementarán con el diálogo en la fase 6.
+
+Un ViewModel sobrevive a la recreación de la Activity, pero no a la muerte del
+proceso. No hay persistencia, base de datos, SavedStateHandle ni llamadas HTTP.
+Las pruebas unitarias cubren totales decimales exactos, lista vacía, balance
+negativo y precarga con ambos tipos y períodos.
+
 ## Git
 
 Cada fase se desarrolla en una rama `feat/phase-N-...`. No se publica ni se
