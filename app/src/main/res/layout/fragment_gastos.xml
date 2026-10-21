@@ -1,22 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <!-- TabLayout muestra el período activo y se sincroniza con el ViewPager2. -->
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tab_layout_gastos"
+    <LinearLayout
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <!-- TabLayout muestra el período activo y se sincroniza con el ViewPager2. -->
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tab_layout_gastos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:tabMode="fixed" />
+
+        <!-- Cada página crea su propio Fragment hijo con la lista correspondiente. -->
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/view_pager_gastos"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <!-- El espacio inferior de cada lista deja sitio para este FAB superpuesto. -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_agregar_gasto"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:tabMode="fixed" />
-
-    <!-- Cada página crea su propio Fragment hijo con la lista correspondiente. -->
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/view_pager_gastos"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
-
-</LinearLayout>
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:contentDescription="@string/descripcion_agregar_gasto"
+        app:srcCompat="@drawable/ic_agregar" />
+</FrameLayout>

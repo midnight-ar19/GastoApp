@@ -8,4 +8,19 @@
     <string name="balance_total">Balance total</string>
     <string name="total_ingresos">Total de ingresos</string>
     <string name="total_gastos">Total de gastos</string>
+
+    <string name="menu_filtrar">Filtrar</string>
+    <string name="subtitulo_filtro_listas">Filtro de listas: %1$s</string>
+    <string name="titulo_dialogo_filtro">Filtrar por categoría</string>
+    <string name="filtro_todas_categorias">Todas las categorías</string>
+
+    <string name="titulo_dialogo_ingreso">Agregar ingreso</string>
+    <string name="titulo_dialogo_gasto">Agregar gasto</string>
+    <string name="hint_monto">Monto</string>
+    <string name="hint_descripcion">Descripción</string>
+    <string name="hint_categoria">Categoría</string>
+    <string name="accion_guardar">Guardar</string>
+    <string name="accion_cancelar">Cancelar</string>
+    <string name="descripcion_agregar_ingreso">Agregar ingreso</string>
+    <string name="descripcion_agregar_gasto">Agregar gasto</string>
 </resources>

@@ -15,6 +15,7 @@ import com.example.gastoapp.databinding.FragmentListaGastosBinding
 import com.example.gastoapp.ui.adapter.TransaccionAdapter
 import com.example.gastoapp.viewmodel.SharedViewModel
 import kotlinx.coroutines.launch
+import kotlin.math.roundToInt
 
 // Cada página conserva su período en argumentos para que FragmentManager pueda restaurarla.
 class ListaGastosFragment : Fragment() {
@@ -44,6 +45,15 @@ class ListaGastosFragment : Fragment() {
                 .StateRestorationPolicy.PREVENT_WHEN_EMPTY
         }
         binding.listaGastos.layoutManager = LinearLayoutManager(requireContext())
+        // El FAB vive en el Fragment padre y se superpone a la lista.
+        val espacioFab = (96 * resources.displayMetrics.density).roundToInt()
+        binding.listaGastos.setPadding(
+            binding.listaGastos.paddingLeft,
+            binding.listaGastos.paddingTop,
+            binding.listaGastos.paddingRight,
+            espacioFab
+        )
+        binding.listaGastos.clipToPadding = false
         binding.listaGastos.adapter = adapter
         // Una referencia por vista mantiene los límites consistentes mientras se observa el estado.
         val referencia = System.currentTimeMillis()
@@ -51,9 +61,9 @@ class ListaGastosFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.estado.collect { estado ->
-                    // La página solo proyecta gastos; no modifica la lista compartida.
+                    // La página proyecta gastos y período sobre la lista filtrada.
                     adapter.submitList(
-                        seleccionarGastos(estado.transacciones, periodo, referencia)
+                        seleccionarGastos(estado.transaccionesVisibles, periodo, referencia)
                     )
                 }
             }

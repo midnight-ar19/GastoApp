@@ -1,13 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- RecyclerView recicla las filas en lugar de crear una vista por cada dato. -->
+    <!-- El espacio inferior evita que el FAB tape la última fila de ingresos. -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/lista_ingresos"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"
-        android:padding="16dp" />
+        android:padding="16dp"
+        android:paddingBottom="96dp" />
+
+    <!-- El botón abre el formulario de alta con tipo INGRESO inferido por la sección. -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_agregar_ingreso"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:contentDescription="@string/descripcion_agregar_ingreso"
+        app:srcCompat="@drawable/ic_agregar" />
 </FrameLayout>

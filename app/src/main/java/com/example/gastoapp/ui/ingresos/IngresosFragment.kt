@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.gastoapp.databinding.FragmentIngresosBinding
 import com.example.gastoapp.model.TipoTransaccion
 import com.example.gastoapp.ui.adapter.TransaccionAdapter
+import com.example.gastoapp.ui.dialog.DialogoTransaccion
 import com.example.gastoapp.viewmodel.SharedViewModel
 import kotlinx.coroutines.launch
 
@@ -20,6 +21,7 @@ import kotlinx.coroutines.launch
 class IngresosFragment : Fragment() {
     private var _binding: FragmentIngresosBinding? = null
     private val viewModel: SharedViewModel by activityViewModels()
+    private var dialogoAlta: DialogoTransaccion? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,12 +43,20 @@ class IngresosFragment : Fragment() {
         }
         binding.listaIngresos.layoutManager = LinearLayoutManager(requireContext())
         binding.listaIngresos.adapter = adapter
+        binding.fabAgregarIngreso.setOnClickListener {
+            dialogoAlta?.dismiss()
+            dialogoAlta = DialogoTransaccion(
+                contexto = requireContext(),
+                viewModel = viewModel,
+                tipo = TipoTransaccion.INGRESO
+            ).also { it.mostrar() }
+        }
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.estado.collect { estado ->
-                    // No modificamos el estado compartido: solo elegimos qué mostrar aquí.
-                    adapter.submitList(estado.transacciones.filter {
+                    // La lista usa la proyección filtrada; los totales no pasan por aquí.
+                    adapter.submitList(estado.transaccionesVisibles.filter {
                         it.tipo == TipoTransaccion.INGRESO
                     })
                 }
@@ -55,6 +65,9 @@ class IngresosFragment : Fragment() {
     }
 
     override fun onDestroyView() {
+        // Cerramos el formulario antes de liberar la vista que lo creó.
+        dialogoAlta?.dismiss()
+        dialogoAlta = null
         // Desconectamos el adaptador antes de liberar la vista del Fragment.
         _binding?.listaIngresos?.adapter = null
         super.onDestroyView()

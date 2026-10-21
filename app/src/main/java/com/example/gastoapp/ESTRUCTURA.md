@@ -142,6 +142,71 @@ enero; `GastosTabsTest` comprueba etiquetas, listas, deslizamiento, recreación 
 regreso desde la navegación inferior. El FAB y el diálogo de alta siguen
 reservados para la fase 6.
 
+## Fase 6: filtro y altas
+
+### Estado compartido
+
+`SharedViewModel` mantiene una única `StateFlow<EstadoFinanciero>` para las tres
+secciones. `transacciones` contiene todos los movimientos y los totales se
+calculan siempre sobre esa lista completa. `categoriaSeleccionada` y
+`transaccionesVisibles` son la proyección que usan únicamente las listas.
+Por eso el filtro no cambia las tarjetas de `Resumen`.
+
+El ViewModel valida el monto, la descripción y la categoría antes de construir
+una transacción. El monto acepta coma o punto como separador decimal, hasta dos
+cifras fraccionarias, y se guarda como `BigDecimal` exacto. Los identificadores
+se asignan solo después de validar, así que un error no consume un ID ni altera
+la lista, los totales o el filtro. La fecha se guarda como milisegundos Unix.
+
+### Toolbar y filtro
+
+`MainActivity` conserva la `MaterialToolbar`, el título dinámico de Navigation y
+el menú `Filtrar`. Registra la Toolbar con `setSupportActionBar` para administrar
+el menú y conecta Navigation mediante `setupActionBarWithNavController`. No usa
+la conexión directa a Toolbar: AppCompat podría sobrescribir el título inicial
+o el restaurado al administrar esa misma barra como ActionBar. El selector contiene `Todas las categorías` y las categorías
+que existen en el estado, incluidas las creadas durante la sesión. El subtítulo
+activo se muestra como `Filtro de listas: ...`; esta etiqueta deja claro que el
+filtro no aplica a `Resumen`.
+
+El `ViewModel` pertenece a la Activity, por lo que el filtro seleccionado y los
+registros guardados sobreviven a la recreación de la Activity mientras el
+proceso siga vivo. Al elegir `Todas las categorías` se usa `null` y se muestran
+nuevamente todas las listas.
+
+### Altas y ciclo de vida
+
+`DialogoTransaccion` es un helper reutilizable de `AlertDialog` con
+ViewBinding. `IngresosFragment` le pasa `INGRESO` y `GastosFragment` le pasa
+`GASTO`; así el tipo no se pide al usuario. `Guardar` mantiene el diálogo
+abierto y muestra errores por campo cuando los datos no son válidos. `Cancelar`
+o un guardado correcto lo cierra.
+
+Cada Fragment conserva una referencia a su diálogo y lo descarta en
+`onDestroyView`. La Activity hace lo mismo con el selector de categorías en
+`onDestroy`, evitando ventanas o vistas retenidas. El formulario sin guardar no
+se conserva durante una rotación; los registros ya guardados y el filtro sí se
+conservan en el ViewModel. No se agrega persistencia de borradores en esta
+fase.
+
+El FAB queda fuera de las filas y las listas reservan espacio inferior para que
+la última transacción siga siendo accesible. El ViewPager2 mantiene sus IDs y
+la pestaña seleccionada para que Android pueda restaurarla.
+
+### Recorrido de lectura
+
+1. `MainActivity` crea el ViewModel compartido, conecta Navigation con la
+   Toolbar y escucha el subtítulo del filtro.
+2. Cada lista observa la misma instantánea y selecciona su tipo; las páginas de
+   gastos aplican además `PeriodoGastos`.
+3. Un FAB crea el helper de diálogo con el tipo de su sección.
+4. El helper delega la validación y el alta al ViewModel.
+5. El ViewModel publica una nueva instantánea; listas y Resumen se actualizan
+   sin compartir adaptadores ni modificar datos desde la vista.
+
+Si un alta válida no coincide con el filtro activo, el registro queda guardado
+y no aparece en la lista filtrada hasta limpiar o cambiar el filtro.
+
 ## Git
 
 Cada fase se desarrolla en una rama `feat/phase-N-...`. No se publica ni se

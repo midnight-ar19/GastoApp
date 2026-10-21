@@ -5,15 +5,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.gastoapp.R
 import com.example.gastoapp.databinding.FragmentGastosBinding
+import com.example.gastoapp.model.TipoTransaccion
+import com.example.gastoapp.ui.dialog.DialogoTransaccion
+import com.example.gastoapp.viewmodel.SharedViewModel
 import com.google.android.material.tabs.TabLayoutMediator
 
 // En la fase 7 heredará de BaseFragment para registrar el ciclo de vida.
 class GastosFragment : Fragment() {
     private var _binding: FragmentGastosBinding? = null
+    private val viewModel: SharedViewModel by activityViewModels()
     private var tabLayoutMediator: TabLayoutMediator? = null
+    private var dialogoAlta: DialogoTransaccion? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,9 +46,20 @@ class GastosFragment : Fragment() {
                 else R.string.tab_gastos_anteriores
             )
         }.also { it.attach() }
+        binding.fabAgregarGasto.setOnClickListener {
+            dialogoAlta?.dismiss()
+            dialogoAlta = DialogoTransaccion(
+                contexto = requireContext(),
+                viewModel = viewModel,
+                tipo = TipoTransaccion.GASTO
+            ).also { it.mostrar() }
+        }
     }
 
     override fun onDestroyView() {
+        // Cerramos el formulario antes de destruir la vista del Fragment padre.
+        dialogoAlta?.dismiss()
+        dialogoAlta = null
         // Primero deshacemos la conexión y después liberamos el adaptador y el binding.
         tabLayoutMediator?.detach()
         tabLayoutMediator = null
