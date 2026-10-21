@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- NavigationUI usa estos IDs para encontrar cada destino. -->
+    <item android:id="@id/resumenFragment" android:icon="@drawable/ic_resumen"
+        android:title="@string/title_resumen" />
+    <item android:id="@id/ingresosFragment" android:icon="@drawable/ic_ingresos"
+        android:title="@string/title_ingresos" />
+    <item android:id="@id/gastosFragment" android:icon="@drawable/ic_gastos"
+        android:title="@string/title_gastos" />
+</menu>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/resumenFragment">
+
+    <!-- Las etiquetas alimentan el título dinámico de la Toolbar. -->
+    <fragment
+        android:id="@+id/resumenFragment"
+        android:name="com.example.gastoapp.ui.resumen.ResumenFragment"
+        android:label="@string/title_resumen" />
+    <fragment
+        android:id="@+id/ingresosFragment"
+        android:name="com.example.gastoapp.ui.ingresos.IngresosFragment"
+        android:label="@string/title_ingresos" />
+    <fragment
+        android:id="@+id/gastosFragment"
+        android:name="com.example.gastoapp.ui.gastos.GastosFragment"
+        android:label="@string/title_gastos" />
+
+</navigation>

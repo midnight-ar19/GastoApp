@@ -1,8 +1,8 @@
 # Organización de la aplicación educativa
 
-La fase 1 habilita ViewBinding y declara las dependencias. Las clases y sus
-carpetas se crearán en la fase que implementa cada comportamiento; no hay
-Fragments vacíos ni pantallas simuladas.
+La fase 1 habilita ViewBinding y declara las dependencias. La fase 2 conecta
+la Activity con tres Fragments de contenido provisional para probar navegación.
+Las listas, los datos y las pestañas se implementarán en sus fases respectivas.
 
 ## Paquetes previstos
 
@@ -39,6 +39,28 @@ CardView aporta las tarjetas solicitadas.
 Se conserva la configuración original de SDK y Android Gradle Plugin. No se
 agrega Compose, base de datos, cliente HTTP ni plugin Kotlin adicional: AGP 9
 incluye soporte Kotlin integrado.
+
+## Fase 2: navegación
+
+`activity_main.xml` organiza Toolbar, NavHostFragment y BottomNavigationView.
+`navigation/nav_graph.xml` define los tres destinos y sus títulos. Los IDs de
+`menu/bottom_navigation_menu.xml` coinciden con los del grafo: NavigationUI usa
+esa coincidencia para navegar sin transacciones manuales de Fragments.
+
+MainActivity obtiene el NavController del host y conecta ambas barras con
+`setupWithNavController`. AppBarConfiguration identifica las tres secciones
+como principales, sin flecha de subir. No se llama a `navigate` al recrear la
+Activity: Navigation restaura su estado sin volver a forzar Resumen.
+
+Cada Fragment infla su propio XML con ViewBinding y libera el binding en
+`onDestroyView`, porque el Fragment y su vista tienen ciclos de vida distintos.
+BaseFragment se incorporará en la fase 7. El menú Filtrar y su comportamiento
+se incorporarán juntos en la fase 6; no hay acciones que simulen filtrar.
+
+Para comprobarlo en un dispositivo o emulador: iniciar en Resumen, tocar
+Ingresos y Gastos, comprobar títulos y selección inferior, volver a Resumen
+y rotar desde Gastos para comprobar la restauración. NavigationTest automatiza
+el destino inicial, los cambios de sección y la recreación de la Activity.
 
 ## Git
 
