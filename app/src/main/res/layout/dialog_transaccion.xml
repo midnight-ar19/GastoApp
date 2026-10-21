@@ -1,54 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="24dp">
+    android:clipToPadding="false"
+    android:fillViewport="true"
+    android:isScrollContainer="true"
+    android:paddingLeft="20dp"
+    android:paddingTop="8dp"
+    android:paddingRight="20dp"
+    android:paddingBottom="8dp">
 
-    <!-- Cada campo tiene un TextInputLayout para mostrar errores sin cerrar el diálogo. -->
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/campo_monto_layout"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/hint_monto">
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/campo_monto"
+        android:orientation="vertical">
+
+        <!-- Cada campo tiene un TextInputLayout para mostrar errores sin cerrar el diálogo. -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/campo_monto_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/hint_monto"
-            android:inputType="numberDecimal"
-            android:digits="0123456789.,"
-            android:maxLines="1" />
-    </com.google.android.material.textfield.TextInputLayout>
+            app:boxBackgroundColor="@color/color_input_background"
+            app:boxBackgroundMode="filled"
+            app:boxCornerRadiusBottomEnd="14dp"
+            app:boxCornerRadiusBottomStart="14dp"
+            app:boxCornerRadiusTopEnd="14dp"
+            app:boxCornerRadiusTopStart="14dp"
+            app:boxStrokeColor="@color/input_stroke_colors"
+            app:hintTextColor="@color/color_text_secondary">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/campo_monto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/hint_monto"
+                android:imeOptions="actionNext"
+                android:inputType="numberDecimal"
+                android:digits="0123456789.,"
+                android:maxLines="1"
+                android:textColor="@color/color_text_primary"
+                android:textColorHint="@color/color_text_secondary" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/campo_descripcion_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:hint="@string/hint_descripcion">
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/campo_descripcion"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/campo_descripcion_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
             android:hint="@string/hint_descripcion"
-            android:inputType="textCapSentences"
-            android:maxLines="1" />
-    </com.google.android.material.textfield.TextInputLayout>
+            app:boxBackgroundColor="@color/color_input_background"
+            app:boxBackgroundMode="filled"
+            app:boxCornerRadiusBottomEnd="14dp"
+            app:boxCornerRadiusBottomStart="14dp"
+            app:boxCornerRadiusTopEnd="14dp"
+            app:boxCornerRadiusTopStart="14dp"
+            app:boxStrokeColor="@color/input_stroke_colors"
+            app:hintTextColor="@color/color_text_secondary">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/campo_descripcion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/hint_descripcion"
+                android:imeOptions="actionNext"
+                android:inputType="textCapSentences"
+                android:maxLines="1"
+                android:textColor="@color/color_text_primary"
+                android:textColorHint="@color/color_text_secondary" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/campo_categoria_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:hint="@string/hint_categoria">
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/campo_categoria"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/campo_categoria_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
             android:hint="@string/hint_categoria"
-            android:inputType="textCapSentences"
-            android:maxLines="1" />
-    </com.google.android.material.textfield.TextInputLayout>
-</LinearLayout>
+            app:boxBackgroundColor="@color/color_input_background"
+            app:boxBackgroundMode="filled"
+            app:boxCornerRadiusBottomEnd="14dp"
+            app:boxCornerRadiusBottomStart="14dp"
+            app:boxCornerRadiusTopEnd="14dp"
+            app:boxCornerRadiusTopStart="14dp"
+            app:boxStrokeColor="@color/input_stroke_colors"
+            app:hintTextColor="@color/color_text_secondary">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/campo_categoria"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/hint_categoria"
+                android:imeOptions="actionDone"
+                android:inputType="textCapSentences"
+                android:maxLines="1"
+                android:textColor="@color/color_text_primary"
+                android:textColorHint="@color/color_text_secondary" />
+        </com.google.android.material.textfield.TextInputLayout>
+    </LinearLayout>
+</ScrollView>

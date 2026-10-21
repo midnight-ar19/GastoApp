@@ -3,6 +3,10 @@ package com.example.gastoapp
 import android.view.View
 import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.IdlingRegistry
+import androidx.test.espresso.IdlingResource
+import androidx.test.espresso.UiController
+import androidx.test.espresso.ViewAction
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.closeSoftKeyboard
 import androidx.test.espresso.action.ViewActions.replaceText
@@ -12,6 +16,7 @@ import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
 import androidx.recyclerview.widget.RecyclerView
 import java.math.BigDecimal
 import java.text.NumberFormat
@@ -63,9 +68,7 @@ class AltaFiltroTest {
             seleccionarCategoria("Servicios")
 
             irAIngresos()
-            onView(withId(R.id.lista_ingresos)).check(
-                matches(conteoDeFilas(0))
-            )
+            esperarConteoDeFilas(R.id.lista_ingresos, 0)
             onView(withId(R.id.lista_ingresos)).check(matches(isDisplayed()))
 
             irAGastos()
@@ -88,12 +91,12 @@ class AltaFiltroTest {
             irAIngresos()
             abrirFiltro()
             seleccionarCategoria("Educación")
-            onView(withId(R.id.lista_ingresos)).check(matches(conteoDeFilas(1)))
+            esperarConteoDeFilas(R.id.lista_ingresos, 1)
             onView(withText("Clase particular")).check(matches(isDisplayed()))
 
             abrirFiltro()
             seleccionarCategoria("Todas las categorías")
-            onView(withId(R.id.lista_ingresos)).check(matches(conteoDeFilas(2)))
+            esperarConteoDeFilas(R.id.lista_ingresos, 2)
             onView(withText("Sueldo")).check(matches(isDisplayed()))
         }
     }
@@ -106,7 +109,7 @@ class AltaFiltroTest {
             llenarAlta("99.00", "No se guarda", "Canceladas")
             onView(withText("Cancelar")).perform(click())
 
-            onView(withId(R.id.lista_ingresos)).check(matches(conteoDeFilas(2)))
+            esperarConteoDeFilas(R.id.lista_ingresos, 2)
             onView(withId(R.id.resumenFragment)).perform(click())
             onView(withText(monto("1250.00"))).check(matches(isDisplayed()))
         }
@@ -127,7 +130,7 @@ class AltaFiltroTest {
             onView(withText("Cancelar")).check(matches(isDisplayed()))
             onView(withText("Cancelar")).perform(click())
 
-            onView(withId(R.id.lista_ingresos)).check(matches(conteoDeFilas(2)))
+            esperarConteoDeFilas(R.id.lista_ingresos, 2)
             onView(withId(R.id.resumenFragment)).perform(click())
             onView(withText(monto("1250.00"))).check(matches(isDisplayed()))
             onView(withText(monto("290.50"))).check(matches(isDisplayed()))
@@ -185,6 +188,20 @@ class AltaFiltroTest {
         onView(withText(categoria)).perform(click())
     }
 
+    private fun esperarConteoDeFilas(idLista: Int, esperado: Int) {
+        val recurso = ConteoFilasIdlingResource(esperado)
+        onView(withId(idLista)).perform(recurso.conectarAction())
+        try {
+            IdlingRegistry.getInstance().register(recurso)
+            onView(withId(idLista)).check(matches(conteoDeFilas(esperado)))
+        } finally {
+            IdlingRegistry.getInstance().unregister(recurso)
+            InstrumentationRegistry.getInstrumentation().runOnMainSync {
+                recurso.desconectar()
+            }
+        }
+    }
+
     private fun monto(valor: String): String = NumberFormat.getNumberInstance().apply {
         minimumFractionDigits = 2
         maximumFractionDigits = 2
@@ -197,5 +214,77 @@ class AltaFiltroTest {
 
         override fun matchesSafely(view: View): Boolean =
             (view as? RecyclerView)?.adapter?.itemCount == esperado
+    }
+
+    /** Espera el evento público del adaptador, sin dormir ni consultar repetidamente. */
+    private class ConteoFilasIdlingResource(
+        private val esperado: Int
+    ) : IdlingResource {
+        private val observador = object : RecyclerView.AdapterDataObserver() {
+            override fun onChanged() = actualizarEstado()
+
+            override fun onItemRangeChanged(positionStart: Int, itemCount: Int) = actualizarEstado()
+
+            override fun onItemRangeChanged(
+                positionStart: Int,
+                itemCount: Int,
+                payload: Any?
+            ) = actualizarEstado()
+
+            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) =
+                actualizarEstado()
+
+            override fun onItemRangeRemoved(positionStart: Int, itemCount: Int) =
+                actualizarEstado()
+
+            override fun onItemRangeMoved(
+                fromPosition: Int,
+                toPosition: Int,
+                itemCount: Int
+            ) = actualizarEstado()
+        }
+        private var recyclerView: RecyclerView? = null
+        private var actual = -1
+        private var callback: IdlingResource.ResourceCallback? = null
+        private var estaEnReposo = false
+
+        override fun getName(): String = "ConteoFilasIdlingResource($esperado)"
+
+        override fun isIdleNow(): Boolean = estaEnReposo
+
+        override fun registerIdleTransitionCallback(callback: IdlingResource.ResourceCallback) {
+            this.callback = callback
+            actualizarEstado()
+        }
+
+        fun conectarAction(): ViewAction = object : ViewAction {
+            override fun getConstraints(): Matcher<View> = isDisplayed()
+
+            override fun getDescription(): String = "conectar observador del conteo de filas"
+
+            override fun perform(uiController: UiController, view: View) {
+                conectar(view as RecyclerView)
+            }
+        }
+
+        fun desconectar() {
+            recyclerView?.adapter?.unregisterAdapterDataObserver(observador)
+            recyclerView = null
+            callback = null
+        }
+
+        private fun conectar(lista: RecyclerView) {
+            recyclerView = lista
+            lista.adapter?.registerAdapterDataObserver(observador)
+            actualizarEstado()
+        }
+
+        private fun actualizarEstado() {
+            actual = recyclerView?.adapter?.itemCount ?: -1
+            if (actual == esperado && !estaEnReposo) {
+                estaEnReposo = true
+                callback?.onTransitionToIdle()
+            }
+        }
     }
 }

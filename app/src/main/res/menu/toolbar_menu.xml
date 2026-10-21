@@ -5,5 +5,11 @@
     <item
         android:id="@+id/menu_filtrar"
         android:title="@string/menu_filtrar"
+        app:showAsAction="always|withText" />
+    <!-- Android elige luna o sol según el modo; el título queda como etiqueta accesible. -->
+    <item
+        android:id="@+id/menu_tema"
+        android:icon="@drawable/ic_tema"
+        android:title="@string/menu_tema"
         app:showAsAction="always" />
 </menu>

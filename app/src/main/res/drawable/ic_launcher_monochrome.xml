@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Android puede teñir esta silueta cuando el usuario activa iconos temáticos. -->
+    <path
+        android:fillColor="@android:color/transparent"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="3"
+        android:strokeLineJoin="round"
+        android:pathData="M35,41H72Q78,41 78,47V68Q78,74 72,74H35Q29,74 29,68V47Q29,41 35,41ZM34,40L62,32M78,51H65Q60,51 60,56V58Q60,63 65,63H78" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M69,54a3,3 0,1 0,0 6a3,3 0,1 0,0 -6Z" />
+</vector>

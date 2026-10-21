@@ -18,6 +18,8 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.gastoapp.databinding.ActivityMainBinding
 import com.example.gastoapp.ui.dialog.DialogoFiltroCategoria
+import com.example.gastoapp.ui.tema.DialogoTema
+import com.example.gastoapp.ui.tema.TemaPreferencias
 import com.example.gastoapp.viewmodel.SharedViewModel
 import com.example.gastoapp.viewmodel.EstadoFinanciero
 import kotlinx.coroutines.launch
@@ -26,8 +28,11 @@ class MainActivity : AppCompatActivity() {
     private var _binding: ActivityMainBinding? = null
     private val viewModel: SharedViewModel by viewModels()
     private var dialogoFiltro: AlertDialog? = null
+    private var dialogoTema: AlertDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // AppCompat debe conocer el modo antes de inflar cualquier vista para evitar un destello.
+        TemaPreferencias.aplicarGuardado(this)
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
@@ -79,7 +84,29 @@ class MainActivity : AppCompatActivity() {
             mostrarDialogoFiltro()
             true
         }
+        R.id.menu_tema -> {
+            mostrarDialogoTema()
+            true
+        }
         else -> super.onOptionsItemSelected(item)
+    }
+
+    private fun mostrarDialogoTema() {
+        dialogoTema?.dismiss()
+        val dialogo = DialogoTema.mostrar(
+            contexto = this,
+            modoActual = TemaPreferencias.leer(this),
+            alSeleccionar = { modo ->
+                // La preferencia se escribe antes de pedir a AppCompat la recreación.
+                TemaPreferencias.guardarYAplicar(this, modo)
+            }
+        )
+        dialogoTema = dialogo
+        dialogo.setOnDismissListener {
+            if (dialogoTema === dialogo) {
+                dialogoTema = null
+            }
+        }
     }
 
     private fun actualizarSubtitulo(estado: EstadoFinanciero) {
@@ -109,9 +136,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
-        // El diálogo pertenece a esta ventana: se cierra antes de destruir la Activity.
+        // Los diálogos pertenecen a esta ventana: se cierran antes de destruir la Activity.
         dialogoFiltro?.dismiss()
         dialogoFiltro = null
+        dialogoTema?.dismiss()
+        dialogoTema = null
         _binding = null
         super.onDestroy()
     }

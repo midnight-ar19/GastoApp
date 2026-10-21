@@ -1,5 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Paleta clara agrupada, inspirada en iOS sin copiar sus componentes. -->
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="color_background">#FFF2F2F7</color>
+    <color name="color_surface">#FFFFFFFF</color>
+    <color name="color_surface_variant">#FFF8F8FA</color>
+    <color name="color_text_primary">#FF1C1C1E</color>
+    <color name="color_text_secondary">#FF636366</color>
+    <color name="color_text_tertiary">#FF8E8E93</color>
+    <color name="color_text_on_accent">#FFFFFFFF</color>
+    <color name="color_accent">#FF0066CC</color>
+    <color name="color_accent_container">#FFD9ECFF</color>
+    <color name="color_accent_ripple">#260066CC</color>
+    <color name="color_balance">#FF0066CC</color>
+    <color name="color_income">#FF137A4A</color>
+    <color name="color_income_container">#FFE7F6ED</color>
+    <color name="color_expense">#FFB3263E</color>
+    <color name="color_expense_container">#FFFCEBED</color>
+    <color name="color_outline">#FFD1D1D6</color>
+    <color name="color_divider">#FFE1E1E6</color>
+    <color name="color_input_background">#FFF9F9FB</color>
+    <color name="color_error">#FFB3261E</color>
+    <color name="color_on_error">#FFFFFFFF</color>
 </resources>

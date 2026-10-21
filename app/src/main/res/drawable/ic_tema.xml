@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <!-- En modo claro mostramos una luna para identificar la opción de tema oscuro. -->
+    <path
+        android:fillColor="@color/color_accent"
+        android:pathData="M12,3a9,9 0,1 0,9 9c0,-0.55 -0.05,-1.09 -0.15,-1.61A7.5,7.5 0,1 1,13.61,3.15C13.09,3.05 12.55,3 12,3z" />
+</vector>

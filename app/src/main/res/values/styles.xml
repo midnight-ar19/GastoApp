@@ -1,0 +1,37 @@
+<resources>
+    <!-- Jerarquía tipográfica compartida por tarjetas y filas. -->
+    <style name="GastoAppCardLabel">
+        <item name="android:fontFamily">sans</item>
+        <item name="android:textColor">@color/color_text_secondary</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:letterSpacing">0.02</item>
+    </style>
+
+    <style name="GastoAppCardAmount">
+        <item name="android:fontFamily">sans</item>
+        <item name="android:textColor">@color/color_balance</item>
+        <item name="android:textSize">28sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="GastoAppItemDescription">
+        <item name="android:fontFamily">sans</item>
+        <item name="android:textColor">@color/color_text_primary</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="GastoAppItemAmount">
+        <item name="android:fontFamily">sans</item>
+        <item name="android:textColor">@color/color_text_primary</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="GastoAppItemMeta">
+        <item name="android:fontFamily">sans</item>
+        <item name="android:textColor">@color/color_text_secondary</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+</resources>

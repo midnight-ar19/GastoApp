@@ -23,6 +23,7 @@ La fase 5 organiza Gastos en pestañas con sus listas hijas.
 - `res/navigation`: grafo de navegación (fase 2).
 - `res/menu`: navegación inferior (fase 2) y filtro (fase 6).
 - `res/values`: textos, colores y temas.
+- `ui/tema`: modo Claro/Oscuro, preferencia de presentación y selector de Toolbar.
 
 ## Conceptos de la fase 1
 
@@ -208,6 +209,34 @@ la pestaña seleccionada para que Android pueda restaurarla.
 
 Si un alta válida no coincide con el filtro activo, el registro queda guardado
 y no aparece en la lista filtrada hasta limpiar o cambiar el filtro.
+
+## Presentación y tema
+
+La paleta clara usa un fondo agrupado cercano a `#F2F2F7`, tarjetas blancas
+redondeadas, azul de acción y colores semánticos verde esmeralda/rojo suave.
+`values-night` mantiene los mismos nombres de recursos con superficies
+`#000000`/`#1C1C1E`, texto claro y acentos adaptados; por eso las tarjetas,
+formularios, pestañas y barras no dependen de colores claros incrustados en XML.
+
+`ModoTema` concentra el contrato estable `claro`/`oscuro` y su conversión a
+las banderas de AppCompat. `TemaPreferencias` guarda solo ese valor en
+SharedPreferences de la aplicación, interpreta la ausencia o un valor inválido
+como Claro y aplica el modo antes de `super.onCreate`. La acción `Tema` de la
+Toolbar usa una luna en modo claro y un sol en modo oscuro. Android selecciona
+`drawable/ic_tema.xml` o `drawable-night/ic_tema.xml` automáticamente; el título
+`Tema` se conserva como etiqueta accesible aunque no aparezca como texto.
+El icono abre una selección única; elegir aplica y guarda inmediatamente,
+mientras `Cancelar` no muta nada. AppCompat recrea la Activity de forma normal,
+por lo que el ViewModel compartido, el destino de Navigation, el filtro y la
+pestaña se restauran sin reiniciar ni duplicar transacciones.
+
+### Icono de la aplicación
+
+Una billetera blanca con una moneda verde sobre azul identifica la app sin
+usar símbolos de una moneda específica. Android 8 o superior usa las capas
+adaptativas de `mipmap-anydpi-v26`; los dispositivos anteriores usan las imágenes
+WebP en cinco densidades. La capa monocromática permite los iconos temáticos de
+Android compatibles. El icono del launcher no cambia con el tema de la app.
 
 ## Fase 7: ciclo de vida de los Fragments
 

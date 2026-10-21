@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- La noche usa superficies reales oscuras y colores semánticos adaptados. -->
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="color_background">#FF000000</color>
+    <color name="color_surface">#FF1C1C1E</color>
+    <color name="color_surface_variant">#FF2C2C2E</color>
+    <color name="color_text_primary">#FFF2F2F7</color>
+    <color name="color_text_secondary">#FFAEAEB2</color>
+    <color name="color_text_tertiary">#FF8E8E93</color>
+    <color name="color_text_on_accent">#FF000000</color>
+    <color name="color_accent">#FF4DA3FF</color>
+    <color name="color_accent_container">#FF173B63</color>
+    <color name="color_accent_ripple">#334DA3FF</color>
+    <color name="color_balance">#FF4DA3FF</color>
+    <color name="color_income">#FF63D391</color>
+    <color name="color_income_container">#FF173B29</color>
+    <color name="color_expense">#FFFF7A85</color>
+    <color name="color_expense_container">#FF4A2429</color>
+    <color name="color_outline">#FF3A3A3C</color>
+    <color name="color_divider">#FF3A3A3C</color>
+    <color name="color_input_background">#FF2C2C2E</color>
+    <color name="color_error">#FFFFB4AB</color>
+    <color name="color_on_error">#FF690005</color>
+</resources>

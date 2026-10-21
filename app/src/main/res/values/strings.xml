@@ -10,7 +10,11 @@
     <string name="total_gastos">Total de gastos</string>
 
     <string name="menu_filtrar">Filtrar</string>
+    <string name="menu_tema">Tema</string>
     <string name="subtitulo_filtro_listas">Filtro de listas: %1$s</string>
+    <string name="titulo_dialogo_tema">Tema</string>
+    <string name="tema_claro">Claro</string>
+    <string name="tema_oscuro">Oscuro</string>
     <string name="titulo_dialogo_filtro">Filtrar por categoría</string>
     <string name="filtro_todas_categorias">Todas las categorías</string>
 
