@@ -1,0 +1,26 @@
+# Configuración local del IDE: cada integrante usa su propio entorno.
+.idea/
+*.iml
+
+# Cachés y archivos generados por Gradle, Kotlin y Android.
+.gradle/
+.kotlin/
+**/build/
+.externalNativeBuild/
+.cxx/
+captures/
+
+# Rutas del SDK y configuración privada de firma.
+local.properties
+keystore.properties
+*.jks
+*.keystore
+
+# Archivos temporales del sistema operativo.
+.DS_Store
+Thumbs.db
+*.swp
+*~
+
+# El wrapper de Gradle se versiona para poder compilar en otros equipos.
+# No ignorar gradlew, gradlew.bat ni gradle/wrapper/.
