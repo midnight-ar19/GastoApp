@@ -10,18 +10,18 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.gastoapp.R
 import com.example.gastoapp.databinding.FragmentGastosBinding
 import com.example.gastoapp.model.TipoTransaccion
+import com.example.gastoapp.ui.base.BaseFragment
 import com.example.gastoapp.ui.dialog.DialogoTransaccion
 import com.example.gastoapp.viewmodel.SharedViewModel
 import com.google.android.material.tabs.TabLayoutMediator
 
-// En la fase 7 heredará de BaseFragment para registrar el ciclo de vida.
-class GastosFragment : Fragment() {
+class GastosFragment : BaseFragment() {
     private var _binding: FragmentGastosBinding? = null
     private val viewModel: SharedViewModel by activityViewModels()
     private var tabLayoutMediator: TabLayoutMediator? = null
     private var dialogoAlta: DialogoTransaccion? = null
 
-    override fun onCreateView(
+    override fun crearVista(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?

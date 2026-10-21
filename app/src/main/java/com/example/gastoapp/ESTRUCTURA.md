@@ -55,8 +55,9 @@ Activity: Navigation restaura su estado sin volver a forzar Resumen.
 
 Cada Fragment infla su propio XML con ViewBinding y libera el binding en
 `onDestroyView`, porque el Fragment y su vista tienen ciclos de vida distintos.
-BaseFragment se incorporará en la fase 7. El menú Filtrar y su comportamiento
-se incorporarán juntos en la fase 6; no hay acciones que simulen filtrar.
+Desde la fase 7, los cuatro Fragments de la aplicación heredan de BaseFragment
+para registrar el ciclo de vida. El menú Filtrar y su comportamiento se
+incorporarán juntos en la fase 6; no hay acciones que simulen filtrar.
 
 Para comprobarlo en un dispositivo o emulador: iniciar en Resumen, tocar
 Ingresos y Gastos, comprobar títulos y selección inferior, volver a Resumen
@@ -115,8 +116,9 @@ FormatoTransaccion presenta montos con dos decimales y fechas según la
 configuración del dispositivo. No agrega símbolo de moneda porque no se definió
 una moneda. Las operaciones siguen usando BigDecimal, nunca el texto mostrado.
 
-El FAB y el diálogo de alta se incorporarán juntos en la fase 6. BaseFragment
-sigue reservado para la fase 7. ResumenIngresosTest comprueba tarjetas y
+El FAB y el diálogo de alta se incorporarán juntos en la fase 6.
+BaseFragment centraliza los registros del ciclo de vida desde la fase 7.
+ResumenIngresosTest comprueba tarjetas y
 totales, las dos filas de ingresos con sus datos, exclusión de gastos y
 recreación sin filas duplicadas. NavigationTest conserva las verificaciones de
 navegación con el contenido real de estas pantallas.
@@ -206,6 +208,28 @@ la pestaña seleccionada para que Android pueda restaurarla.
 
 Si un alta válida no coincide con el filtro activo, el registro queda guardado
 y no aparece en la lista filtrada hasta limpiar o cambiar el filtro.
+
+## Fase 7: ciclo de vida de los Fragments
+
+`BaseFragment` hereda de `Fragment` y escribe en Logcat con la etiqueta
+`CicloVida` el nombre de la clase concreta y cada uno de sus nueve callbacks.
+Los cuatro Fragments de la aplicación (`ResumenFragment`, `IngresosFragment`,
+`GastosFragment` y `ListaGastosFragment`) heredan de esta clase; las páginas
+de ViewPager2 usan el mismo mecanismo que las pantallas principales.
+
+`onCreateView` es final para que ningún hijo pueda saltarse el registro común.
+En vez de sobrescribirlo, cada pantalla implementa `crearVista`, que conserva
+la inflación de su binding. Así el método plantilla registra primero el evento
+y después delega la parte específica sin cambiar la duración del binding,
+los adaptadores, el mediador de pestañas ni las colecciones de estado.
+Los métodos `onViewCreated` y `onDestroyView` de las pantallas siguen llamando
+a `super`, de modo que el log base se integra con la preparación y liberación
+de los recursos propios de cada vista.
+
+La prueba unitaria verifica la herencia pública sin instanciar Fragments. La
+prueba instrumentada navega por las secciones y pestañas, cambia entre
+`CREATED` y `RESUMED`, recrea y cierra la Activity, y lee el Logcat del proceso
+sin borrar el buffer para comprobar los nueve eventos de cada clase.
 
 ## Git
 

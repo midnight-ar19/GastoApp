@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -13,17 +12,17 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.gastoapp.databinding.FragmentIngresosBinding
 import com.example.gastoapp.model.TipoTransaccion
 import com.example.gastoapp.ui.adapter.TransaccionAdapter
+import com.example.gastoapp.ui.base.BaseFragment
 import com.example.gastoapp.ui.dialog.DialogoTransaccion
 import com.example.gastoapp.viewmodel.SharedViewModel
 import kotlinx.coroutines.launch
 
-// En la fase 7 heredará de BaseFragment para registrar el ciclo de vida.
-class IngresosFragment : Fragment() {
+class IngresosFragment : BaseFragment() {
     private var _binding: FragmentIngresosBinding? = null
     private val viewModel: SharedViewModel by activityViewModels()
     private var dialogoAlta: DialogoTransaccion? = null
 
-    override fun onCreateView(
+    override fun crearVista(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?

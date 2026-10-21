@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -13,12 +12,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.gastoapp.databinding.FragmentListaGastosBinding
 import com.example.gastoapp.ui.adapter.TransaccionAdapter
+import com.example.gastoapp.ui.base.BaseFragment
 import com.example.gastoapp.viewmodel.SharedViewModel
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
 // Cada página conserva su período en argumentos para que FragmentManager pueda restaurarla.
-class ListaGastosFragment : Fragment() {
+class ListaGastosFragment : BaseFragment() {
     private var _binding: FragmentListaGastosBinding? = null
     private val viewModel: SharedViewModel by activityViewModels()
 
@@ -27,7 +27,7 @@ class ListaGastosFragment : Fragment() {
             requireNotNull(requireArguments().getString(ARG_PERIODO))
         )
 
-    override fun onCreateView(
+    override fun crearVista(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?

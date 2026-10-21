@@ -4,23 +4,22 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.gastoapp.databinding.FragmentResumenBinding
 import com.example.gastoapp.ui.FormatoTransaccion
+import com.example.gastoapp.ui.base.BaseFragment
 import com.example.gastoapp.viewmodel.SharedViewModel
 import kotlinx.coroutines.launch
 
-// En la fase 7 heredará de BaseFragment para registrar el ciclo de vida.
-class ResumenFragment : Fragment() {
+class ResumenFragment : BaseFragment() {
     private var _binding: FragmentResumenBinding? = null
     // El propietario es la Activity: Ingresos obtiene exactamente la misma instancia.
     private val viewModel: SharedViewModel by activityViewModels()
 
-    override fun onCreateView(
+    override fun crearVista(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
