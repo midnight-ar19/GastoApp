@@ -3,7 +3,7 @@
 La fase 1 habilita ViewBinding y declara las dependencias. La fase 2 conecta
 la Activity con tres Fragments para probar navegación. La fase 3 agrega el
 modelo y el estado; la fase 4 muestra tarjetas de Resumen y la lista de Ingresos.
-Gastos conserva su contenido provisional hasta la fase 5.
+La fase 5 organiza Gastos en pestañas con sus listas hijas.
 
 ## Paquetes previstos
 
@@ -115,11 +115,32 @@ FormatoTransaccion presenta montos con dos decimales y fechas según la
 configuración del dispositivo. No agrega símbolo de moneda porque no se definió
 una moneda. Las operaciones siguen usando BigDecimal, nunca el texto mostrado.
 
-El FAB y el diálogo de alta se incorporarán juntos en la fase 6. Gastos y
-BaseFragment siguen reservados para las fases 5 y 7 respectivamente.
-ResumenIngresosTest comprueba tarjetas y totales, las dos filas de ingresos con
-sus datos, exclusión de gastos y recreación sin filas duplicadas. NavigationTest
-conserva las verificaciones de navegación con el contenido real de estas pantallas.
+El FAB y el diálogo de alta se incorporarán juntos en la fase 6. BaseFragment
+sigue reservado para la fase 7. ResumenIngresosTest comprueba tarjetas y
+totales, las dos filas de ingresos con sus datos, exclusión de gastos y
+recreación sin filas duplicadas. NavigationTest conserva las verificaciones de
+navegación con el contenido real de estas pantallas.
+
+## Fase 5: pestañas de gastos
+
+`GastosFragment` contiene un `TabLayout` y un `ViewPager2`. Su
+`FragmentStateAdapter` recibe el Fragment padre y crea dos
+`ListaGastosFragment` con argumentos restaurables: `ESTE_MES` y `ANTERIORES`.
+El `TabLayoutMediator` se conecta una vez por vista y se desconecta en
+`onDestroyView`; también se libera el adaptador del `ViewPager2`.
+
+Cada página usa `activityViewModels` para observar la misma instancia de
+`SharedViewModel`. La selección de períodos está en `PeriodoGastos.kt`: usa el
+inicio local del mes actual de forma inclusiva, el inicio del siguiente mes de
+forma exclusiva y solo conserva transacciones de tipo GASTO. La colección usa
+`viewLifecycleOwner.lifecycleScope` con `repeatOnLifecycle(STARTED)` y el
+RecyclerView se desconecta al destruir la vista. No se fuerza `currentItem`,
+por lo que `ViewPager2` puede restaurar la pestaña seleccionada.
+
+`GastosPeriodosTest` prueba los límites exactos y el cambio de diciembre a
+enero; `GastosTabsTest` comprueba etiquetas, listas, deslizamiento, recreación y
+regreso desde la navegación inferior. El FAB y el diálogo de alta siguen
+reservados para la fase 6.
 
 ## Git
 

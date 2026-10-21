@@ -28,7 +28,7 @@ class NavigationTest {
             onView(withId(R.id.ingresosFragment)).perform(click())
             verificaDestino(R.string.title_ingresos, "Sueldo")
             onView(withId(R.id.gastosFragment)).perform(click())
-            verificaDestino(R.string.title_gastos, R.string.placeholder_gastos)
+            verificaDestino(R.string.title_gastos, "Supermercado")
             onView(withId(R.id.resumenFragment)).perform(click())
             verificaDestino(R.string.title_resumen, R.string.balance_total)
         }
@@ -39,7 +39,7 @@ class NavigationTest {
         ActivityScenario.launch(MainActivity::class.java).use { scenario ->
             onView(withId(R.id.gastosFragment)).perform(click())
             scenario.recreate()
-            verificaDestino(R.string.title_gastos, R.string.placeholder_gastos)
+            verificaDestino(R.string.title_gastos, "Supermercado")
         }
     }
 
